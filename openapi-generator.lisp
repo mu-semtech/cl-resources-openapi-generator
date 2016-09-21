@@ -649,6 +649,8 @@
   "Retrieves the type of a property for OpenAPI to use."
   (case (mu-cl-resources::resource-type property)
     (:url (jsown:new-js ("type" "string")))
+    (:number (jsown:new-js ("type" "number")))
+    (:boolean (jsown:new-js ("type" "boolean")))
     (:string (jsown:new-js ("type" "string")))
     (:datetime (jsown:new-js ("type" "dateTime")))
     (:date (jsown:new-js ("type" "date")))
@@ -660,7 +662,9 @@
                             ("items" (jsown:new-js ("type" "string")))))
     (:language-string-set (jsown:new-js ("type" "array") ;; this is correct
                                         ("items" (jsown:new-js ("type" "string")))))
-    (otherwise "string")))
+    (otherwise (unless (find :docker *features*)
+                 (break (format nil "~A" property)))
+               (jsown:new-js ("type" "string")))))
 
 (defun single-resource-property-description (property)
   "Retrieves the definition for a property of a singular resource"
