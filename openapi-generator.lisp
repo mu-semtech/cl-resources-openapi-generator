@@ -20,8 +20,13 @@
            ("paths" (merge-jsown-objects
                      (mapcar #'generate-resource (all-resources))))
            ("definitions" (merge-jsown-objects
-                               (mapcar #'generate-single-resource-definition
-                                       (all-resources)))))))
+                           (mapcar #'generate-single-resource-definition
+                                   (all-resources)))))))
+
+    (when (find :docker *features*)
+      (with-open-file (output "/config/output/openapi.json" :direction :output)
+        (format output "~A" (jsown:to-json spec))))
+
     (format t "~A" (jsown:to-json spec))))
 
 (defun merge-jsown-objects (objects-to-merge)
@@ -671,5 +676,3 @@
                                                      (mu-cl-resources::resource-type property))))))))
     (merge-jsown-objects (list (jsown:new-js ("description" description))
                                (property-content-type property)))))
-              
-
