@@ -12,7 +12,7 @@ Generates OpenAPI spec from mu-cl-resources
     docker run --link my-database:database \
            -v `pwd`/config/resources:/config \
            -v /tmp/:/config/output \
-           semtech/mu-resources-openapi-generator
+           semtech/mu-cl-resources-openapi-generator
     
     # Copy from the terminal, or open the generated json file
     cat /tmp/openapi.json
