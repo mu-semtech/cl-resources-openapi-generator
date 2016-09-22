@@ -62,6 +62,11 @@
                              (generate-resource-object-calls resource)
                              (generate-resource-link-calls resource))))
 
+(defun tag-listing (tags)
+  "Converts a set of tags to a tag listing for openapi.
+   Currently means it removes the duplicates."
+  (remove-duplicates tags :test #'equal))
+
 (defun generate-resource-list-calls (resource)
   "Returns the jsown object containing the list calls which can be done
    on the supplied resource."
@@ -73,13 +78,13 @@
                   ("summary" (resource-label-for-listing resource))
                   ("description" (resource-description-for-listing resource))
                   ("parameters" (resource-parameters-for-listing resource))
-                  ("tags" (resource-tags-for-listing resource))
+                  ("tags" (tag-listing (resource-tags-for-listing resource)))
                   ("responses" (resource-responses-for-listing resource))))
          ("post" (jsown:new-js
                    ("summary" (resource-label-for-create resource))
                    ("description" (resource-description-for-create resource))
                    ("parameters" (resource-parameters-for-create resource))
-                   ("tags" (resource-tags-for-create resource))
+                   ("tags" (tag-listing (resource-tags-for-create resource)))
                    ("responses" (resource-responses-for-create resource)))))))))
 
 (defun generate-resource-object-calls (resource)
@@ -93,19 +98,19 @@
                   ("summary" (resource-label-for-show resource))
                   ("description" (resource-description-for-show resource))
                   ("parameters" (resource-parameters-for-show resource))
-                  ("tags" (resource-tags-for-show resource))
+                  ("tags" (tag-listing (resource-tags-for-show resource)))
                   ("responses" (resource-responses-for-show resource))))
          ("patch" (jsown:new-js
                     ("summary" (resource-label-for-patch resource))
                     ("description" (resource-description-for-patch resource))
                     ("parameters" (resource-parameters-for-patch resource))
-                    ("tags" (resource-tags-for-patch resource))
+                    ("tags" (tag-listing (resource-tags-for-patch resource)))
                     ("responses" (resource-responses-for-patch resource))))
          ("delete" (jsown:new-js
                      ("summary" (resource-label-for-delete resource))
                      ("description" (resource-description-for-delete resource))
                      ("parameters" (resource-parameters-for-delete resource))
-                     ("tags" (resource-tags-for-delete resource))
+                     ("tags" (tag-listing (resource-tags-for-delete resource)))
                      ("responses" (resource-responses-for-delete resource)))))))))
 
 (defun generate-resource-link-calls (resource)
@@ -162,9 +167,9 @@
                            (mu-cl-resources::json-type resource)))
     ("parameters"
      (list (generate-id-parameter-specification resource)))
-    ("tags" (list "relationship" "listing"
-                  (string-type-name (mu-cl-resources::referred-resource relationship))
-                  (string-type-name resource)))
+    ("tags" (tag-listing (list "relationship" "listing"
+                               (string-type-name (mu-cl-resources::referred-resource relationship))
+                               (string-type-name resource))))
     ("responses"
      (jsown:new-js
        ("200"
@@ -217,9 +222,9 @@
     ("parameters"
      (list (generate-id-parameter-specification resource)
            (generate-body-parameter-for-relation-patch-call resource relationship)))
-    ("tags" (list "relationship" "update"
-                  (string-type-name (mu-cl-resources::referred-resource relationship))
-                  (string-type-name resource)))
+    ("tags" (tag-listing (list "relationship" "update"
+                               (string-type-name (mu-cl-resources::referred-resource relationship))
+                               (string-type-name resource))))
     ("responses"
      (jsown:new-js
        ("204"
@@ -246,9 +251,9 @@
        (list (generate-id-parameter-specification resource)
                                         ; looks similar to patch for has-many-link
              (generate-body-parameter-for-relation-patch-call resource relationship)))
-      ("tags" (list "relationship" "update"
-                  (string-type-name (mu-cl-resources::referred-resource relationship))
-                  (string-type-name resource)))
+      ("tags" (tag-listing (list "relationship" "update"
+                                 (string-type-name (mu-cl-resources::referred-resource relationship))
+                                 (string-type-name resource))))
       ("responses"
        (jsown:new-js
          ("204"
@@ -275,9 +280,9 @@
        (list (generate-id-parameter-specification resource)
                                         ; looks similar to patch for has-many-link
              (generate-body-parameter-for-relation-patch-call resource relationship)))
-      ("tags" (list "relationship" "update"
-                  (string-type-name (mu-cl-resources::referred-resource relationship))
-                  (string-type-name resource)))
+      ("tags" (tag-listing (list "relationship" "update"
+                                 (string-type-name (mu-cl-resources::referred-resource relationship))
+                                 (string-type-name resource))))
       ("responses"
        (jsown:new-js
          ("204"
