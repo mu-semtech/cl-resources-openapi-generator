@@ -45,7 +45,7 @@
   (let ((result (first (sparql:select (s-var "result")
                                       query))))
     (when result
-      (jsown:filter "result" "value"))))
+      (jsown:filter result "result" "value"))))
 
 (defun triple-pattern (subject predicate object)
   "Returns the triple pattern for the given subject, predicate and object."
