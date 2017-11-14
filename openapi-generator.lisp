@@ -42,10 +42,16 @@
 (defun simple-query (query)
   "Sends a simple query and returns the first result.
    The result's parameter should be ?result."
-  (let ((result (first (sparql:select (s-var "result")
-                                      query))))
-    (when result
-      (jsown:filter result "result" "value"))))
+  (let ((results (sparql:select (s-var "result")
+                                query)))
+    ;; Take the english result if available
+    (let ((maybe-english-result
+           (or (find-if (lambda (jso)
+                          (equalp (jsown::val-safe (jsown:val jso "result") "xml:lang") "en"))
+                        results)
+               (first results))))
+      (when maybe-english-result
+        (jsown:filter maybe-english-result "result" "value")))))
 
 (defun triple-pattern (subject predicate object)
   "Returns the triple pattern for the given subject, predicate and object."
