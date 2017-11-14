@@ -616,7 +616,7 @@
                           ("properties"
                            (let ((properties (jsown:empty-object)))
                              (loop for prop in (mu-cl-resources::ld-properties resource)
-                                do (setf (jsown:val properties (mu-cl-resources::json-key prop))
+                                do (setf (jsown:val properties (string-downcase (mu-cl-resources::json-key prop)))
                                          (single-resource-property-description prop)))
                              properties))))))))))
 
