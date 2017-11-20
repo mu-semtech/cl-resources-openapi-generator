@@ -663,7 +663,7 @@
     (:number (jsown:new-js ("type" "number")))
     (:boolean (jsown:new-js ("type" "boolean")))
     (:string (jsown:new-js ("type" "string")))
-    (:datetime (jsown:new-js ("type" "string") ("type" "date-time")))
+    (:datetime (jsown:new-js ("type" "string") ("format" "date-time")))
     (:date (jsown:new-js ("type" "string") ("format" "date")))
     (:g-year (jsown:new-js ("type" "string")))
     (:geometry (jsown:new-js ("type" "string")))
