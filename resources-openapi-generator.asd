@@ -7,5 +7,5 @@
   :description "Openapi generator for mu-cl-resources specification."
   :serial t
   :depends-on (mu-cl-resources)
-  :components ((:file "packages")
+  :components ((:file "packages-openapi-generator")
                (:file "openapi-generator")))
