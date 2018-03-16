@@ -31,5 +31,6 @@
 
 (defun mu-support::mu-semtech-passed-headers () nil)
 
+(eval (read-from-string "(ql:register-local-projects)"))
 (eval (read-from-string "(ql:quickload :resources-openapi-generator)"))
 (eval (read-from-string "(openapi-generator:generate)"))
