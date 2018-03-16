@@ -1,5 +1,14 @@
 (in-package :openapi-generator)
 
+(defun env-value (setting)
+  "Returns the value of the supplied environment variable."
+  (sb-ext:posix-getenv (string-upcase (string setting))))
+
+(defparameter *supported-schemes*
+  (split-sequence:split-sequence #\, (env-value "SUPPORTED_SCHEMES"))
+  "Schemes which are to be supported by the generator.  Defaults to
+  http and https.  Set the environment variable SUPPORTED_SCHEMES.")
+
 (defun all-resources ()
   (loop for val being
      the hash-values of mu-cl-resources::*resources*
@@ -14,7 +23,7 @@
             (jsown:new-js ("title" "generated mu-cl-resources api")
                           ("description" "API generated from mu-cl-resources for a specific domain")
                           ("version" "1.0.0")))
-           ("schemes" (list "http"))
+           ("schemes" *supported-schemes*)
            ("basePath" "/")
            ("produces" (list "application/vnd.api+json"))
            ("paths" (merge-jsown-objects
