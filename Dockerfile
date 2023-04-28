@@ -1,4 +1,4 @@
-FROM semtech/mu-cl-resources:1.17.1
+FROM semtech/mu-cl-resources:1.22.0
 
 COPY . /app/dependencies/resources-openapi-generator/
 ADD ./startup.lisp /usr/src/startup.lisp
